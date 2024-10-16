@@ -1,0 +1,30 @@
+# This is a Databricks asset bundle definition for pandasudf_dabs_registry.
+# The Databricks extension requires databricks.yml configuration file.
+# See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
+
+bundle:
+  name: pandasudf_dabs_registry
+
+workspace:
+  host: <workspace-url>
+  profile: <databricks-cli-profile>
+
+targets:
+  train_models:
+    resources:
+      jobs: 
+          train:
+              name: train_models
+              job_clusters:
+                - job_cluster_key: train_models_cluster
+                  new_cluster:
+                    spark_version: 15.4.x-cpu-ml-scala2.12
+                    node_type_id: i3.xlarge
+                    runtime_engine: STANDARD
+                    num_workers: 2
+              tasks:
+                - task_key: train_models
+                  job_cluster_key: train_models_cluster
+                  spark_python_task:
+                    python_file: pandasudf_dabs_registry/train.py
+                  #existing_cluster_id: 1016-204858-7t5ox0bi
